@@ -1,67 +1,72 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development', 
-    parts: [
-      {
-        name: 'Fundmentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  } 
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <>
+      <div id = "Feedback">
+        <Header name = "give feedback" />
+        <Button name = "good" handleClick = {() => setGood(good + 1)}/>
+        <Button name = "neutral" handleClick = {() => setNeutral(neutral + 1)}/>
+        <Button name = "bad" handleClick = {() => setBad(bad + 1)}/>
+      </div>
+      <div id = "Statistics">
+      <Header name = "statistics" />
+      <Statistics good={good} bad={bad} neutral={neutral}/>
+      
+      </div>
+    </>
+  )
+}
+
+const Statistics = ({good, bad, neutral}) => {
   
+    const average = () => {
+    if (total() === 0) return 0
+    return (good-bad)/total()
+  }
 
-  return (
-    <div>
-      <Header course = {course.name}/>
-      <Content parts = {course.parts}/>
-      <Total parts = {course.parts}/>
-    </div>
-  )
-}
+  const positive = () => {
+    if (total() === 0) return 0
+    return (good/(good+bad+neutral))*100 + "%"
+  }
 
-const Header = (props) => {
-  return (
-    <h1>{props.course}</h1>
-  )
-}
+  const total = () => {
+    return good+bad+neutral
+  }
 
-const Content = (props) => {
+  if (good+bad+neutral === 0) {
+    return <p>No feedback given</p>
+  }
   return (
     <>
-      <Part part = {props.parts[0]}/>
-      <Part part = {props.parts[1]}/>
-      <Part part = {props.parts[2]}/>
+      <Statistic name="good" value={good}/>
+      <Statistic name="neutral" value={neutral}/>
+      <Statistic name="bad" value={bad}/>
+      <Statistic name="total" value={total()}/>
+      <Statistic name="average" value={average()}/>
+      <Statistic name="positive" value={positive()}/>
     </>
   )
 }
 
-const Part = (props) => {
+const Header = ({name}) => {
+  return <h1>{name}</h1>
+}
+
+const Statistic = ({name, value}) => {
+  return <p>{name}: {value}</p>
+}
+
+const Button = ({name, handleClick}) => {
   return (
-    <>
-      <p>{props.part.name}</p>
-      <p>{props.part.exercises}</p>
-    </>
+    <button onClick = {handleClick}>{name}</button>
   )
 }
 
-const Total = (props) => {
-  var total = 0
-  props.parts.forEach(value => {
-    total += value.exercises
-  })
-  return (
-    <p>{total}</p>
-  )
-}
+
 ReactDOM.render(<App />, document.getElementById('root'))
