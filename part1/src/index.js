@@ -43,14 +43,14 @@ const Statistics = ({good, bad, neutral}) => {
     return <p>No feedback given</p>
   }
   return (
-    <>
+    <table>
       <Statistic name="good" value={good}/>
       <Statistic name="neutral" value={neutral}/>
       <Statistic name="bad" value={bad}/>
       <Statistic name="total" value={total()}/>
       <Statistic name="average" value={average()}/>
       <Statistic name="positive" value={positive()}/>
-    </>
+    </table>
   )
 }
 
@@ -59,7 +59,7 @@ const Header = ({name}) => {
 }
 
 const Statistic = ({name, value}) => {
-  return <p>{name}: {value}</p>
+  return <tr><td>{name}</td><td>{value}</td></tr>
 }
 
 const Button = ({name, handleClick}) => {
