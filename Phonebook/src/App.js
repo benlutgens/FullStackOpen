@@ -105,6 +105,7 @@ const App = () => {
                     setNewName('')
                     setNewNum('')
                     setSearch('')
+                    //TODO currently showing an error notification, even when person is updated
                     notify('success', `Updated ${updatedPerson.name} successfully`)
                 })
                 .catch(error => {
